@@ -1,10 +1,10 @@
 # Hotel Invoice PDF Cross-Page Record Reconstruction
 
-**Student project: AI-powered solution for extracting guest data from hotel invoices where records split across multiple pages**
+**project: AI-powered solution for extracting guest data from hotel invoices where records split across multiple pages**
 
 ---
 
-## 🎓 Student Project Overview
+## 🎓  Project Overview
 
 ### The Problem I Discovered
 While exploring real-world data challenges, I found that hotel PDF invoices have a fascinating problem: guest records naturally split across pages due to space constraints. This creates significant challenges:
