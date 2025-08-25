@@ -1,0 +1,477 @@
+{
+  "extraction_summary": {
+    "total_guests": 24,
+    "cross_page_guests": 24,
+    "total_revenue": 4470.38,
+    "avg_services_per_guest": 6.5,
+    "extraction_timestamp": "2025-08-25T23:06:20.677720"
+  },
+  "cross_page_analysis": {
+    "cross_page_rate": "100.0%",
+    "cross_page_details": [
+      {
+        "Guest_Name": "John Jones",
+        "Room_Number": "100",
+        "Page_Start": 1,
+        "Page_End": 0,
+        "Total_Amount": 159.5
+      },
+      {
+        "Guest_Name": "Michael Williams",
+        "Room_Number": "101",
+        "Page_Start": 1,
+        "Page_End": 0,
+        "Total_Amount": 80.75
+      },
+      {
+        "Guest_Name": "Robert Lopez",
+        "Room_Number": "103",
+        "Page_Start": 2,
+        "Page_End": 0,
+        "Total_Amount": 85.24
+      },
+      {
+        "Guest_Name": "Anna Miller",
+        "Room_Number": "104",
+        "Page_Start": 2,
+        "Page_End": 0,
+        "Total_Amount": 189.25
+      },
+      {
+        "Guest_Name": "Jennifer Smith",
+        "Room_Number": "106",
+        "Page_Start": 4,
+        "Page_End": 0,
+        "Total_Amount": 238.49
+      },
+      {
+        "Guest_Name": "Robert Johnson",
+        "Room_Number": "108",
+        "Page_Start": 5,
+        "Page_End": 0,
+        "Total_Amount": 264.25
+      },
+      {
+        "Guest_Name": "Emma Rodriguez",
+        "Room_Number": "110",
+        "Page_Start": 6,
+        "Page_End": 0,
+        "Total_Amount": 222.49
+      },
+      {
+        "Guest_Name": "Michael Martinez",
+        "Room_Number": "111",
+        "Page_Start": 6,
+        "Page_End": 0,
+        "Total_Amount": 154.25
+      },
+      {
+        "Guest_Name": "Michael Miller",
+        "Room_Number": "113",
+        "Page_Start": 8,
+        "Page_End": 0,
+        "Total_Amount": 254.49
+      },
+      {
+        "Guest_Name": "Michael Lopez",
+        "Room_Number": "114",
+        "Page_Start": 8,
+        "Page_End": 0,
+        "Total_Amount": 155.99
+      },
+      {
+        "Guest_Name": "Sarah Smith",
+        "Room_Number": "116",
+        "Page_Start": 9,
+        "Page_End": 0,
+        "Total_Amount": 287.49
+      },
+      {
+        "Guest_Name": "Patricia Smith",
+        "Room_Number": "118",
+        "Page_Start": 10,
+        "Page_End": 0,
+        "Total_Amount": 139.49
+      },
+      {
+        "Guest_Name": "John Lopez",
+        "Room_Number": "120",
+        "Page_Start": 11,
+        "Page_End": 0,
+        "Total_Amount": 193.49
+      },
+      {
+        "Guest_Name": "Michael Williams",
+        "Room_Number": "121",
+        "Page_Start": 11,
+        "Page_End": 0,
+        "Total_Amount": 176.25
+      },
+      {
+        "Guest_Name": "William Lopez",
+        "Room_Number": "123",
+        "Page_Start": 12,
+        "Page_End": 0,
+        "Total_Amount": 161.0
+      },
+      {
+        "Guest_Name": "David Davis",
+        "Room_Number": "124",
+        "Page_Start": 12,
+        "Page_End": 0,
+        "Total_Amount": 246.0
+      },
+      {
+        "Guest_Name": "Robert Davis",
+        "Room_Number": "126",
+        "Page_Start": 13,
+        "Page_End": 0,
+        "Total_Amount": 163.24
+      },
+      {
+        "Guest_Name": "Patricia Brown",
+        "Room_Number": "128",
+        "Page_Start": 14,
+        "Page_End": 0,
+        "Total_Amount": 135.0
+      },
+      {
+        "Guest_Name": "Jennifer Johnson",
+        "Room_Number": "129",
+        "Page_Start": 14,
+        "Page_End": 0,
+        "Total_Amount": 162.0
+      },
+      {
+        "Guest_Name": "David Jones",
+        "Room_Number": "131",
+        "Page_Start": 15,
+        "Page_End": 0,
+        "Total_Amount": 179.75
+      },
+      {
+        "Guest_Name": "David Williams",
+        "Room_Number": "133",
+        "Page_Start": 16,
+        "Page_End": 0,
+        "Total_Amount": 259.99
+      },
+      {
+        "Guest_Name": "Richard Wilson",
+        "Room_Number": "135",
+        "Page_Start": 17,
+        "Page_End": 0,
+        "Total_Amount": 134.49
+      },
+      {
+        "Guest_Name": "Thomas Jones",
+        "Room_Number": "136",
+        "Page_Start": 17,
+        "Page_End": 0,
+        "Total_Amount": 155.0
+      },
+      {
+        "Guest_Name": "Michael Johnson",
+        "Room_Number": "138",
+        "Page_Start": 19,
+        "Page_End": 0,
+        "Total_Amount": 272.49
+      }
+    ]
+  },
+  "guest_records": [
+    {
+      "Guest_Name": "John Jones",
+      "Room_Number": "100",
+      "Check_In_Date": "25.11.2024",
+      "Check_Out_Date": "29.11.2024",
+      "Services": "Room Service; Parking Fee; Breakfast Service; Minibar Charges; Spa Treatment",
+      "Total_Amount": 159.5,
+      "Service_Count": 5,
+      "Page_Start": 1,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Michael Williams",
+      "Room_Number": "101",
+      "Check_In_Date": "12.11.2024",
+      "Check_Out_Date": "14.11.2024",
+      "Services": "Business Center; Late Checkout; Laundry Service; Room Service",
+      "Total_Amount": 80.75,
+      "Service_Count": 4,
+      "Page_Start": 1,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Robert Lopez",
+      "Room_Number": "103",
+      "Check_In_Date": "13.11.2024",
+      "Check_Out_Date": "17.11.2024",
+      "Services": "Laundry Service; Room Service; Minibar Charges; WiFi Premium",
+      "Total_Amount": 85.24,
+      "Service_Count": 4,
+      "Page_Start": 2,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Anna Miller",
+      "Room_Number": "104",
+      "Check_In_Date": "21.11.2024",
+      "Check_Out_Date": "24.11.2024",
+      "Services": "Breakfast Service; Room Accommodation; Room Service; Minibar Charges; Telephone Charges; Late Checkout",
+      "Total_Amount": 189.25,
+      "Service_Count": 6,
+      "Page_Start": 2,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Jennifer Smith",
+      "Room_Number": "106",
+      "Check_In_Date": "27.11.2024",
+      "Check_Out_Date": "02.12.2024",
+      "Services": "Minibar Charges; Business Center; WiFi Premium; Spa Treatment; Laundry Service; Room Accommodation; City Tax; Telephone Charges",
+      "Total_Amount": 238.49,
+      "Service_Count": 8,
+      "Page_Start": 4,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Robert Johnson",
+      "Room_Number": "108",
+      "Check_In_Date": "26.11.2024",
+      "Check_Out_Date": "30.11.2024",
+      "Services": "Spa Treatment; Parking Fee; Telephone Charges; Late Checkout; Room Accommodation; Business Center; City Tax; Breakfast Service; Room Service",
+      "Total_Amount": 264.25,
+      "Service_Count": 9,
+      "Page_Start": 5,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Emma Rodriguez",
+      "Room_Number": "110",
+      "Check_In_Date": "28.11.2024",
+      "Check_Out_Date": "29.11.2024",
+      "Services": "WiFi Premium; Minibar Charges; Telephone Charges; Breakfast Service; Room Service; Laundry Service; Room Accommodation; City Tax; Parking Fee; Business Center",
+      "Total_Amount": 222.49,
+      "Service_Count": 10,
+      "Page_Start": 6,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Michael Martinez",
+      "Room_Number": "111",
+      "Check_In_Date": "03.11.2024",
+      "Check_Out_Date": "05.11.2024",
+      "Services": "Room Service; City Tax; Laundry Service; Business Center; Spa Treatment; Breakfast Service",
+      "Total_Amount": 154.25,
+      "Service_Count": 6,
+      "Page_Start": 6,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Michael Miller",
+      "Room_Number": "113",
+      "Check_In_Date": "03.11.2024",
+      "Check_Out_Date": "05.11.2024",
+      "Services": "Spa Treatment; Room Accommodation; Room Service; City Tax; Late Checkout; WiFi Premium; Minibar Charges",
+      "Total_Amount": 254.49,
+      "Service_Count": 7,
+      "Page_Start": 8,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Michael Lopez",
+      "Room_Number": "114",
+      "Check_In_Date": "24.11.2024",
+      "Check_Out_Date": "28.11.2024",
+      "Services": "Parking Fee; Minibar Charges; Late Checkout; WiFi Premium; Room Accommodation",
+      "Total_Amount": 155.99,
+      "Service_Count": 5,
+      "Page_Start": 8,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Sarah Smith",
+      "Room_Number": "116",
+      "Check_In_Date": "30.11.2024",
+      "Check_Out_Date": "02.12.2024",
+      "Services": "Room Accommodation; Parking Fee; WiFi Premium; City Tax; Spa Treatment; Breakfast Service; Room Service; Minibar Charges; Laundry Service; Telephone Charges",
+      "Total_Amount": 287.49,
+      "Service_Count": 10,
+      "Page_Start": 9,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Patricia Smith",
+      "Room_Number": "118",
+      "Check_In_Date": "21.11.2024",
+      "Check_Out_Date": "23.11.2024",
+      "Services": "Breakfast Service; WiFi Premium; Telephone Charges; Room Accommodation; Laundry Service",
+      "Total_Amount": 139.49,
+      "Service_Count": 5,
+      "Page_Start": 10,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "John Lopez",
+      "Room_Number": "120",
+      "Check_In_Date": "16.11.2024",
+      "Check_Out_Date": "20.11.2024",
+      "Services": "Late Checkout; WiFi Premium; Spa Treatment; Room Accommodation",
+      "Total_Amount": 193.49,
+      "Service_Count": 4,
+      "Page_Start": 11,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Michael Williams",
+      "Room_Number": "121",
+      "Check_In_Date": "07.11.2024",
+      "Check_Out_Date": "08.11.2024",
+      "Services": "Room Accommodation; Parking Fee; Telephone Charges; Room Service; Minibar Charges; Business Center",
+      "Total_Amount": 176.25,
+      "Service_Count": 6,
+      "Page_Start": 11,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "William Lopez",
+      "Room_Number": "123",
+      "Check_In_Date": "30.11.2024",
+      "Check_Out_Date": "02.12.2024",
+      "Services": "Telephone Charges; Business Center; Room Service; Room Accommodation; Laundry Service; City Tax",
+      "Total_Amount": 161.0,
+      "Service_Count": 6,
+      "Page_Start": 12,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "David Davis",
+      "Room_Number": "124",
+      "Check_In_Date": "02.11.2024",
+      "Check_Out_Date": "06.11.2024",
+      "Services": "Late Checkout; Telephone Charges; Minibar Charges; Business Center; Spa Treatment; Laundry Service; Room Accommodation",
+      "Total_Amount": 246.0,
+      "Service_Count": 7,
+      "Page_Start": 12,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Robert Davis",
+      "Room_Number": "126",
+      "Check_In_Date": "12.11.2024",
+      "Check_Out_Date": "16.11.2024",
+      "Services": "City Tax; Laundry Service; Business Center; WiFi Premium; Spa Treatment; Room Service; Breakfast Service",
+      "Total_Amount": 163.24,
+      "Service_Count": 7,
+      "Page_Start": 13,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Patricia Brown",
+      "Room_Number": "128",
+      "Check_In_Date": "18.11.2024",
+      "Check_Out_Date": "20.11.2024",
+      "Services": "Room Service; Business Center; Room Accommodation; City Tax",
+      "Total_Amount": 135.0,
+      "Service_Count": 4,
+      "Page_Start": 14,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Jennifer Johnson",
+      "Room_Number": "129",
+      "Check_In_Date": "15.11.2024",
+      "Check_Out_Date": "18.11.2024",
+      "Services": "Room Accommodation; Room Service; Minibar Charges; Breakfast Service",
+      "Total_Amount": 162.0,
+      "Service_Count": 4,
+      "Page_Start": 14,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "David Jones",
+      "Room_Number": "131",
+      "Check_In_Date": "30.11.2024",
+      "Check_Out_Date": "05.12.2024",
+      "Services": "Late Checkout; Minibar Charges; City Tax; Parking Fee; Laundry Service; Spa Treatment; Business Center; Breakfast Service",
+      "Total_Amount": 179.75,
+      "Service_Count": 8,
+      "Page_Start": 15,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "David Williams",
+      "Room_Number": "133",
+      "Check_In_Date": "17.11.2024",
+      "Check_Out_Date": "18.11.2024",
+      "Services": "Room Accommodation; WiFi Premium; Laundry Service; Spa Treatment; Breakfast Service; City Tax; Parking Fee; Business Center; Telephone Charges; Late Checkout",
+      "Total_Amount": 259.99,
+      "Service_Count": 10,
+      "Page_Start": 16,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Richard Wilson",
+      "Room_Number": "135",
+      "Check_In_Date": "09.11.2024",
+      "Check_Out_Date": "13.11.2024",
+      "Services": "WiFi Premium; Late Checkout; City Tax; Spa Treatment; Breakfast Service; Parking Fee",
+      "Total_Amount": 134.49,
+      "Service_Count": 6,
+      "Page_Start": 17,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Thomas Jones",
+      "Room_Number": "136",
+      "Check_In_Date": "06.11.2024",
+      "Check_Out_Date": "09.11.2024",
+      "Services": "Laundry Service; Business Center; Room Service; Spa Treatment; Parking Fee; Telephone Charges",
+      "Total_Amount": 155.0,
+      "Service_Count": 6,
+      "Page_Start": 17,
+      "Page_End": 0,
+      "Spans_Pages": true
+    },
+    {
+      "Guest_Name": "Michael Johnson",
+      "Room_Number": "138",
+      "Check_In_Date": "14.11.2024",
+      "Check_Out_Date": "16.11.2024",
+      "Services": "Telephone Charges; WiFi Premium; Minibar Charges; Parking Fee; Spa Treatment; Room Accommodation; City Tax; Laundry Service; Room Service",
+      "Total_Amount": 272.49,
+      "Service_Count": 9,
+      "Page_Start": 19,
+      "Page_End": 0,
+      "Spans_Pages": true
+    }
+  ],
+  "chunking_metadata": {
+    "chunking_strategy": "cross_page_reconstruction",
+    "pdf_source": "natural_split_hotel_invoice.pdf",
+    "pages_processed": "unknown"
+  }
+}

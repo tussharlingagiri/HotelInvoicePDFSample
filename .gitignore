@@ -1,5 +1,6 @@
 .venv/
 *.pyc
 __pycache__/
-*.pdf
-*.json
+# Allow specific demo files
+!natural_split_hotel_invoice.pdf
+!hotel_chunks.json
