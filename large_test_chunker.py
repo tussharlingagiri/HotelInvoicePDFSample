@@ -1,15 +1,14 @@
 """
-Specialized chunker for the large test PDF with cross-page record reconstruction
+Chunker for large test hotel invoice PDFs with cross-page record reconstruction
 """
 
 import pdfplumber
 import pandas as pd
 import re
-import json
 from typing import List, Dict, Tuple, Optional
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 import logging
-from datetime import datetime
+import json
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -17,9 +16,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class TestGuestRecord:
     """Represents a guest record that may span across pages"""
-    guest_id: Optional[str] = None
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
+    guest_name: Optional[str] = None
     room_number: Optional[str] = None
     check_in_date: Optional[str] = None
     check_out_date: Optional[str] = None
@@ -28,14 +25,13 @@ class TestGuestRecord:
     page_start: int = 0
     page_end: int = 0
     is_complete: bool = False
-    is_split: bool = False
     
     def __post_init__(self):
         if self.services is None:
             self.services = []
 
 class LargeTestChunker:
-    """Specialized chunker for large test PDF format"""
+    """Chunker for large test hotel invoice format"""
     
     def __init__(self):
         self.incomplete_guest = None
@@ -75,9 +71,9 @@ class LargeTestChunker:
             carry_over_guest = incomplete_guest
             
         # Handle any remaining incomplete guest
-        if carry_over_guest and carry_over_guest.guest_id:
-            logger.warning(f"Incomplete guest at end: {carry_over_guest.guest_id}")
-            if carry_over_guest.services or carry_over_guest.first_name:  # Has some data
+        if carry_over_guest and carry_over_guest.guest_name:
+            logger.warning(f"Incomplete guest at end: {carry_over_guest.guest_name}")
+            if carry_over_guest.services:  # Has some data
                 all_guests.append(carry_over_guest)
         
         return self._convert_to_dataframe(all_guests)
@@ -90,12 +86,11 @@ class LargeTestChunker:
         complete_guests = []
         current_guest = carry_over
         
-        # Patterns for test PDF format
-        guest_pattern = r'Guest:\s*([A-Za-z]+)\s+([A-Za-z]+)\s*\(ID:\s*(G\d+)\)'
-        room_pattern = r'Room:\s*(\d+)\s*\|\s*Check-in:\s*([\d.]+)\s*\|\s*Check-out:\s*([\d.]+)'
-        service_pattern = r'^([A-Za-z\s\-]+)\s+(\d+)\s+\$?([\d.]+)\s+\$?([\d.]+)$'
-        total_pattern = r'TOTAL:\s*\$?([\d.]+)'
-        continuation_pattern = r'CONTINUED ON NEXT PAGE'
+        # Patterns for test hotel format
+        guest_pattern = r'Guest:\s*([^,]+),\s*Room:\s*(\d+),\s*Stay:\s*(\d{1,2}\.\d{1,2}\.\d{4})\s*to\s*(\d{1,2}\.\d{1,2}\.\d{4})'
+        service_pattern = r'^([A-Za-z\s]+)\s+([\d%]+)\s+(\d+)\s+€([\d.]+)\s+€([\d.]+)$'
+        total_pattern = r'^TOTAL\s+€([\d.]+)$'
+        services_header_pattern = r'Services and Charges:'
         
         in_service_table = False
         
@@ -104,13 +99,6 @@ class LargeTestChunker:
             
             if not line:
                 continue
-            
-            # Check for continuation indicator
-            if re.search(continuation_pattern, line):
-                if current_guest:
-                    current_guest.is_split = True
-                    logger.info(f"Guest {current_guest.guest_id} continues on next page")
-                continue
                 
             # Check for new guest
             guest_match = re.search(guest_pattern, line)
@@ -118,32 +106,29 @@ class LargeTestChunker:
                 # Save previous guest if complete
                 if current_guest and self._is_guest_complete(current_guest):
                     complete_guests.append(current_guest)
-                elif current_guest and current_guest.guest_id:
+                elif current_guest and current_guest.guest_name:
                     # Incomplete guest - will be carried over
-                    logger.info(f"Guest {current_guest.guest_id} incomplete, carrying to next page")
+                    logger.info(f"Guest {current_guest.guest_name} incomplete, carrying to next page")
                 
                 # Start new guest
                 current_guest = TestGuestRecord(
-                    first_name=guest_match.group(1),
-                    last_name=guest_match.group(2),
-                    guest_id=guest_match.group(3),
+                    guest_name=guest_match.group(1).strip(),
+                    room_number=guest_match.group(2),
+                    check_in_date=guest_match.group(3),
+                    check_out_date=guest_match.group(4),
                     page_start=page_num,
                     services=[]
                 )
                 in_service_table = False
                 continue
             
-            # Check for room info
-            if current_guest and not current_guest.room_number:
-                room_match = re.search(room_pattern, line)
-                if room_match:
-                    current_guest.room_number = room_match.group(1)
-                    current_guest.check_in_date = room_match.group(2)
-                    current_guest.check_out_date = room_match.group(3)
-                    continue
-            
             # Check for service table header
-            if re.search(r'Service.*Qty.*Unit Price.*Total', line):
+            if 'Service Description' in line and 'Total Price' in line:
+                in_service_table = True
+                continue
+            
+            # Check for services header
+            if re.search(services_header_pattern, line):
                 in_service_table = True
                 continue
             
@@ -152,29 +137,28 @@ class LargeTestChunker:
                 service_match = re.search(service_pattern, line)
                 if service_match:
                     service_name = service_match.group(1).strip()
-                    quantity = service_match.group(2).strip()
-                    unit_price = service_match.group(3).strip()
-                    total_price = service_match.group(4).strip()
+                    tax_rate = service_match.group(2).strip()
+                    quantity = service_match.group(3).strip()
+                    unit_price = service_match.group(4)
+                    total_price = service_match.group(5)
                     
                     try:
                         current_guest.services.append({
                             'service': service_name,
+                            'tax_rate': tax_rate,
                             'quantity': int(quantity),
                             'unit_price': float(unit_price),
                             'total_price': float(total_price)
                         })
+                        current_guest.total_amount += float(total_price)
                     except (ValueError, AttributeError) as e:
                         logger.warning(f"Error parsing service line: {line} - {e}")
-                    continue
                 
-                # Check for total
+                # Check for total line
                 total_match = re.search(total_pattern, line)
-                if total_match:
-                    try:
-                        current_guest.total_amount = float(total_match.group(1))
-                        in_service_table = False
-                    except ValueError:
-                        pass
+                if total_match and current_guest:
+                    current_guest.total_amount = float(total_match.group(1))
+                    current_guest.is_complete = True
         
         # Check final guest status
         complete_guests_final = complete_guests
@@ -192,9 +176,7 @@ class LargeTestChunker:
     def _is_guest_complete(self, guest: TestGuestRecord) -> bool:
         """Check if guest record has all required information"""
         return (
-            guest.guest_id is not None and
-            guest.first_name is not None and
-            guest.last_name is not None and
+            guest.guest_name is not None and
             guest.room_number is not None and
             guest.check_in_date is not None and
             guest.check_out_date is not None and
@@ -212,8 +194,7 @@ class LargeTestChunker:
         for guest in guests:
             services_text = "; ".join([s['service'] for s in guest.services])
             data.append({
-                'Guest_ID': guest.guest_id,
-                'Guest_Name': f"{guest.first_name} {guest.last_name}",
+                'Guest_Name': guest.guest_name,
                 'Room_Number': guest.room_number,
                 'Check_In_Date': guest.check_in_date,
                 'Check_Out_Date': guest.check_out_date,
@@ -222,8 +203,7 @@ class LargeTestChunker:
                 'Service_Count': len(guest.services),
                 'Page_Start': guest.page_start,
                 'Page_End': guest.page_end,
-                'Spans_Pages': guest.page_start != guest.page_end,
-                'Is_Split': guest.is_split
+                'Spans_Pages': guest.page_start != guest.page_end
             })
         
         df = pd.DataFrame(data)
@@ -234,108 +214,65 @@ class LargeTestChunker:
         if not cross_page.empty:
             logger.info(f"Found {len(cross_page)} records spanning multiple pages:")
             for _, record in cross_page.iterrows():
-                logger.info(f"  {record['Guest_ID']}: {record['Guest_Name']} (Pages {record['Page_Start']}-{record['Page_End']})")
-        
-        # Show split records
-        split_records = df[df['Is_Split'] == True]
-        if not split_records.empty:
-            logger.info(f"Found {len(split_records)} records with continuation indicators:")
-            for _, record in split_records.iterrows():
-                logger.info(f"  {record['Guest_ID']}: {record['Guest_Name']}")
+                logger.info(f"  {record['Guest_Name']} (Pages {record['Page_Start']}-{record['Page_End']})")
         
         return df
-    
-    def export_chunks_to_json(self, pdf_path: str, output_file: str = "chunks_analysis.json") -> str:
-        """Export raw chunks and processed data to JSON"""
-        
-        try:
-            with pdfplumber.open(pdf_path) as pdf:
-                # Extract raw page chunks
-                raw_chunks = []
-                for page_num, page in enumerate(pdf.pages, 1):
-                    text = page.extract_text()
-                    raw_chunks.append({
-                        'page_number': page_num,
-                        'raw_text': text,
-                        'line_count': len(text.split('\n')),
-                        'char_count': len(text)
-                    })
-                
-                # Process with chunker
-                df = self.process_large_test_pdf(pdf_path)
-                
-                # Convert DataFrame to records
-                processed_records = df.to_dict('records') if not df.empty else []
-                
-                # Create comprehensive JSON output
-                output_data = {
-                    'metadata': {
-                        'pdf_file': pdf_path,
-                        'extraction_timestamp': datetime.now().isoformat(),
-                        'total_pages': len(raw_chunks),
-                        'total_records_extracted': len(processed_records),
-                        'cross_page_records': len(df[df['Spans_Pages'] == True]) if not df.empty else 0,
-                        'split_records': len(df[df['Is_Split'] == True]) if not df.empty else 0
-                    },
-                    'raw_chunks': raw_chunks,
-                    'processed_records': processed_records,
-                    'analysis': {
-                        'chunking_strategy': 'cross_page_reconstruction',
-                        'duplicate_handling': 'enabled',
-                        'total_revenue': float(df['Total_Amount'].sum()) if not df.empty else 0.0,
-                        'average_amount': float(df['Total_Amount'].mean()) if not df.empty else 0.0
-                    }
-                }
-                
-                # Write to JSON file
-                with open(output_file, 'w', encoding='utf-8') as f:
-                    json.dump(output_data, f, indent=2, ensure_ascii=False)
-                
-                logger.info(f"Exported chunks and data to {output_file}")
-                return output_file
-                
-        except Exception as e:
-            logger.error(f"Error exporting to JSON: {e}")
-            return ""
 
-def test_large_test_chunker():
+def test_large_chunker():
     """Test the chunker with large test PDF"""
     
-    print("🏨 Testing Large Test PDF Cross-Page Record Reconstruction")
-    print("=" * 60)
+    print("🏨 Testing Large Hotel Invoice Cross-Page Record Reconstruction")
+    print("=" * 70)
     
     chunker = LargeTestChunker()
     
     try:
-        df = chunker.process_large_test_pdf("large_test_invoice.pdf")
+        df = chunker.process_large_test_pdf("natural_split_hotel_invoice.pdf")
         
         if not df.empty:
             print(f"✅ Successfully processed {len(df)} guest records")
-            print("\n📊 Sample Results:")
-            print(df.head(10).to_string(index=False))
+            
+            # Show summary statistics
+            print(f"\n📊 Processing Results:")
+            print(f"   Total Guests: {len(df)}")
+            print(f"   Total Revenue: €{df['Total_Amount'].sum():.2f}")
+            print(f"   Avg Services per Guest: {df['Service_Count'].mean():.1f}")
             
             # Show cross-page analysis
             cross_page_records = df[df['Spans_Pages'] == True]
             if not cross_page_records.empty:
                 print(f"\n🔄 Cross-page records: {len(cross_page_records)}")
                 for _, record in cross_page_records.iterrows():
-                    print(f"   {record['Guest_ID']}: {record['Guest_Name']} (Pages {record['Page_Start']}-{record['Page_End']})")
+                    print(f"   {record['Guest_Name']}: Pages {record['Page_Start']}-{record['Page_End']}")
             
-            # Show split records
-            split_records = df[df['Is_Split'] == True]
-            if not split_records.empty:
-                print(f"\n📄 Records with continuation: {len(split_records)}")
-                for _, record in split_records.iterrows():
-                    print(f"   {record['Guest_ID']}: {record['Guest_Name']}")
+            # Save results as JSON
+            guest_records = df.to_dict('records')
             
-            print(f"\n💰 Total revenue: ${df['Total_Amount'].sum():.2f}")
-            print(f"📈 Average stay amount: ${df['Total_Amount'].mean():.2f}")
+            # Create comprehensive JSON output
+            json_output = {
+                'extraction_summary': {
+                    'total_guests': len(df),
+                    'cross_page_guests': len(cross_page_records),
+                    'total_revenue': float(df['Total_Amount'].sum()),
+                    'avg_services_per_guest': float(df['Service_Count'].mean()),
+                    'extraction_timestamp': pd.Timestamp.now().isoformat()
+                },
+                'cross_page_analysis': {
+                    'cross_page_rate': f"{(len(cross_page_records)/len(df)*100):.1f}%",
+                    'cross_page_details': cross_page_records[['Guest_Name', 'Room_Number', 'Page_Start', 'Page_End', 'Total_Amount']].to_dict('records')
+                },
+                'guest_records': guest_records,
+                'chunking_metadata': {
+                    'chunking_strategy': 'cross_page_reconstruction',
+                    'pdf_source': 'natural_split_hotel_invoice.pdf',
+                    'pages_processed': len([text for text in page_texts if text.strip()]) if 'page_texts' in locals() else 'unknown'
+                }
+            }
             
-            # Export to JSON
-            print(f"\n📄 Exporting chunks to JSON...")
-            json_file = chunker.export_chunks_to_json("large_test_invoice.pdf")
-            if json_file:
-                print(f"✅ Exported to {json_file}")
+            with open('hotel_chunks.json', 'w') as f:
+                json.dump(json_output, f, indent=2)
+            print(f"\n💾 Complete results saved to: hotel_chunks.json")
+            print(f"📊 JSON contains {len(guest_records)} guest records with cross-page analysis")
             
         else:
             print("❌ No records extracted")
@@ -345,37 +282,5 @@ def test_large_test_chunker():
     except Exception as e:
         print(f"❌ Error: {e}")
 
-def export_chunks_only():
-    """Export chunks to JSON without full processing output"""
-    
-    print("📄 Exporting PDF chunks to JSON...")
-    chunker = LargeTestChunker()
-    
-    try:
-        json_file = chunker.export_chunks_to_json("large_test_invoice.pdf", "hotel_chunks.json")
-        if json_file:
-            print(f"✅ Successfully exported chunks to {json_file}")
-            
-            # Show file size
-            import os
-            size = os.path.getsize(json_file)
-            print(f"📊 File size: {size:,} bytes")
-            
-            # Show structure preview
-            with open(json_file, 'r') as f:
-                data = json.load(f)
-                
-            print(f"\n📋 JSON Structure:")
-            print(f"  • Metadata: {len(data['metadata'])} fields")
-            print(f"  • Raw chunks: {len(data['raw_chunks'])} pages")
-            print(f"  • Processed records: {len(data['processed_records'])} guests")
-            print(f"  • Analysis data: {len(data['analysis'])} metrics")
-            
-        else:
-            print("❌ Export failed")
-            
-    except Exception as e:
-        print(f"❌ Error: {e}")
-
 if __name__ == "__main__":
-    test_large_test_chunker()
+    test_large_chunker()
